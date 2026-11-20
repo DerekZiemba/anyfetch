@@ -6,6 +6,7 @@ This fork adds the features below on top of upstream Anyfetch. Everything else w
 
 | Feature | Section |
 | --- | --- |
+| TL;DR just tell me how to build | [Build from source](#build-from-source) |
 | A real browser for pages that need scripts or refuse plain requests | [Browser fallback](#browser-fallback) |
 | Output formats, CSS selectors and jq programs | [New inputs](#new-inputs) |
 | Choose when page scripts run | [Pages that need their scripts](#pages-that-need-their-scripts) |
@@ -234,7 +235,23 @@ Codes added by this fork, on top of the [upstream codes](README-OG.md#errors):
 ## Build from source
 
 You need Rust 1.98, `cmake` and `clang` (the TLS library is BoringSSL). On Windows you also need NASM.
-Use whichever suited for your scenario: 
-- `cargo install --git https://github.com/aliasmode/anyfetch`
-- ` cargo build --release`
-- `sudo cargo install --path .`
+List of commands to pick from for whichever suits your scenario: 
+```sh
+# Build & Install directly from remote without first cloning
+cargo install --git https://github.com/DerekZiemba/anyfetch
+
+# Make windows build
+cargo test  --target-dir target/win
+cargo build --release --target-dir target/win  # build an exe and place it in target/win
+# Note: I believe 'sudo' requires Win11 25H2. Alternative is to just run administrator shell
+sudo cargo install --path .  # build exe & install it onto PATH
+
+# In WSL from Windows
+wsl -d Ubuntu -- bash -lc "cargo test --target-dir target/linux"
+wsl -d Ubuntu -- bash -lc "cargo build --release --target-dir target/linux"
+
+# Install into WSL
+wsl -d Ubuntu -- bash -lc "cargo install --path ."
+# Install into WSL direct from remote
+wsl -d Ubuntu -- bash -lc "cargo install --git https://github.com/DerekZiemba/anyfetch"
+```
